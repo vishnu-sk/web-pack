@@ -1,0 +1,16 @@
+# Node.js dependencies
+node_modules/
+
+# Build output folders (dist, build)
+dist/
+build/
+
+# Optional: ignore log files
+*.log
+
+# Optional: ignore environment variable files
+.env
+
+# Optional: ignore system files
+.DS_Store  # macOS
+Thumbs.db  # Windows
