@@ -1,3 +1,157 @@
-body{
-    background-color: purple;
+body {
+  box-sizing: border-box;
+  --clr-darkblue: #213555;
+  --clr-blue: #3e5879;
+  --clr-lightblue: #d8c4b6;
+  --clr-azure: #f5efe7;
+  background-color: var(--clr-blue);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  font-family: Helvetica;
+  font-size: 24px;
+}
+header {
+  padding: 30px;
+}
+
+header > nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 0px 50px;
+}
+
+nav button {
+  width: 30%;
+  padding: 10px 0 6px;
+  border: none;
+  border-radius: 5px;
+  background-color: var(--clr-lightblue);
+  font-weight: 900;
+  color: var(--clr-darkblue);
+}
+
+nav button:hover {
+  border: 1px solid var(--clr-darkblue);
+  color: var(--clr-lightblue);
+  background-color: var(--clr-darkblue);
+  margin: -2px 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+nav button:active {
+  background-color: var(--clr-azure);
+  border-color: var(--clr-azure);
+  color: var(--clr-blue);
+  border-radius: 5px;
+}
+
+#content {
+  margin: 0px 50px;
+  /* padding: 20px; */
+  box-sizing: border-box;
+  color: var(--clr-lightblue);
+}
+
+.intro-cont {
+  padding: 30px 35px;
+  margin-bottom: 20px;
+  position: relative;
+  border: 1px solid lightskyblue;
+  border-radius: 10px;
+  background-color: var(--clr-darkblue);
+}
+
+h1,
+h2 {
+  padding-bottom: 20px;
+  text-align: center;
+  color: var(--clr-azure);
+}
+h1 {
+  margin: 20px auto;
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.3em;
+  margin: 10px 0 0;
+}
+
+p {
+  text-wrap: wrap;
+  text-align: left;
+}
+
+.img-cont {
+  float: left;
+  margin: 0 40px 20px 0;
+  width: max(50%, 600px);
+  max-width: 780px;
+  box-sizing: border-box;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+img {
+  object-fit: cover;
+  width: 100%;
+  border-radius: 15px;
+}
+
+.clear-float {
+  clear: both;
+}
+
+.timings {
+  padding: 0 40px 25px;
+  list-style: none;
+}
+
+.timings li {
+  padding: 5px 10px;
+  position: relative;
+  text-align: center;
+}
+
+.timings li::after {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0.75em;
+  height: 1px;
+  background-color: var(--clr-azure);
+  width: 30%;
+  left: 70%;
+}
+
+.timings li::before {
+  content: "";
+  display: block;
+  position: absolute;
+  top: 0.75em;
+  height: 1px;
+  background-color: var(--clr-azure);
+  width: 30%;
+  left: 0%;
+}
+
+@media (max-width: 1080px) {
+  .img-cont {
+    width: 100%;
+    margin: 0 0 20px;
+    padding: 0px;
+    box-sizing: border-box;
+    float: none;
+  }
+
+  .timings li::after,
+  .timings li::before {
+    width: 0;
+  }
+
 }
