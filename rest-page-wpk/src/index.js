@@ -6,5 +6,5 @@ console.log(intro);
 const k = document.querySelector("#content");
 const homeElems = intro.createHome();
 
-k.appendChild(homeElems.introCont);
-k.appendChild(homeElems.timingsIntroCont);
+//k.appendChild(homeElems.introCont);
+//k.appendChild(homeElems.timingsIntroCont);

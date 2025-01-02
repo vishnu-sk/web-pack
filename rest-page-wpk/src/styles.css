@@ -4,7 +4,7 @@ body {
   --clr-blue: #3e5879;
   --clr-lightblue: #d8c4b6;
   --clr-azure: #f5efe7;
-  background-color: var(--clr-blue);
+  /* background-color: var(--clr-blue); */
 }
 
 * {
@@ -15,6 +15,10 @@ body {
 }
 header {
   padding: 30px;
+  position: sticky;
+  z-index: 2;
+  background-color: var(--clr-blue);
+  top:0;
 }
 
 header > nav {
@@ -51,10 +55,15 @@ nav button:active {
 }
 
 #content {
-  margin: 0px 50px;
-  /* padding: 20px; */
+  /*margin: 0px 50px;*/
+  padding: 20px 70px;
   box-sizing: border-box;
+  backdrop-filter: blur(10px);
+  background-attachment: fixed;
   color: var(--clr-lightblue);
+  background-image: url("./images/rest-img.jpg");
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .intro-cont {
@@ -154,4 +163,77 @@ img {
     width: 0;
   }
 
+}
+
+/*MENU PAGE */
+
+.menu-cont{
+  background:#213555a4;
+  width: 100%;
+  border-radius: 10px;
+  border: 1px solid skyblue;
+  margin: 20px auto;
+  backdrop-filter: blur(10px);
+  padding: 30px 45px;
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: repeat(auto-fill,minmax(300px, 1fr));
+  gap: 10px;
+}
+
+.menu-item-cont{
+  background-color: rgba(139, 69, 19, 0.378);
+  height: 100%;
+  border-radius: 5px;
+  /* border: 1px solid saddlebrown; */
+  overflow: hidden;
+  display: grid ;
+  aspect-ratio: 1/1.6;
+}
+
+.menu-item-cont * {
+  grid-column: 1/2;
+  grid-row: 1/2;
+}
+
+.menu-item-cont img{
+  width: 100%;
+  aspect-ratio: 1/1;
+  object-fit: cover;
+}
+
+.card-content{
+  background-color: rgba(245, 239, 231,0.9);
+  color: #213555;
+  padding: 5px 20px;
+  margin: 15px;
+  align-self: flex-end;
+  border-radius: 5px;
+  box-shadow: -5px -5px 10px #535353;
+  aspect-ratio: 2/1;
+}
+
+.card-content h2{
+  color: #333;
+  font-weight: 900;
+  text-align: end;
+  letter-spacing: -0.5px;
+  padding: 5px 0;
+  position: relative;
+}
+
+.card-content h2::after{
+  content: "";
+  position: absolute;
+  display: block;
+  height: 1px;
+  background-color: #213555;
+  width: 75%;
+}
+
+.card-content p:first-of-type{
+  font-family: monospace;
+  text-align: left;
+  font-size: 1.3em;
+  padding-bottom: 10px;
 }
