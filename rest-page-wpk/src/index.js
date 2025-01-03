@@ -1,6 +1,7 @@
 import "./styles.css";
 import intro from "./homePage.js";
 import menu from "./menuPage.js";
+import about from "./aboutPage.js";
 
 //console.log(intro);
 
@@ -22,7 +23,10 @@ button.addEventListener("click", e => {
     k.appendChild(homeElems.introCont);
     k.appendChild(homeElems.timingsIntroCont);
   }
+  else if(e.target.id == "about"){
+    k.innerHTML = "";
+    const aboutElem = about();
+    k.appendChild(aboutElem);
+  }
 });
 
-//k.appendChild(homeElems.introCont);
-//k.appendChild(homeElems.timingsIntroCont);
