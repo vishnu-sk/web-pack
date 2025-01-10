@@ -1,10 +1,180 @@
-*{
-    padding: 0;
-    margin: 0;
+* {
+  padding: 0;
+  margin: 0;
 }
 
-body{
-    font-size: 12px;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    
+html,
+body {
+  height: 100%;
+  width: 100%;
+}
+
+body {
+  font-size: 12px;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+}
+
+.container {
+  width: 100%;
+  height: 100%;
+  background-color: seashell;
+  display: flex;
+  flex-direction: column;
+}
+
+nav {
+  padding: 1rem 2rem;
+  background-color: beige;
+  box-sizing: border-box;
+  height: 3.5rem;
+}
+
+.sub-cont {
+  display: flex;
+  flex: 1;
+}
+
+.side-bar-cont {
+  padding: 1.5rem 0rem;
+  background-color: aquamarine;
+  width: 15%;
+  min-width: 170px;
+  position: relative;
+  overflow-x: hidden;
+  transition: 0.5s ease-in;
+}
+
+.collapsing {
+  position: absolute;
+  top: 0.2rem;
+  right: 0.2rem;
+}
+.sidebar-buttons {
+  border: none;
+  display: flex;
+  width: 100%;
+  background-color: inherit;
+  padding: 0.4rem 1rem;
+  align-items: center;
+  font-size: 1rem;
+}
+
+.sidebar-buttons:hover {
+  background-color: rgb(147, 147, 192);
+  color: aliceblue;
+  cursor: pointer;
+  font-weight: 900;
+}
+
+.add-task-btn {
+  padding-left: 0.4rem;
+}
+
+.content-cont {
+  box-sizing: border-box;
+  width: 100%;
+  padding: 2rem;
+}
+
+.header-cont {
+  padding: 0 0.5rem 1rem;
+}
+
+.task-cont {
+  background-color: yellowgreen;
+  padding: 2rem 0;
+  width: 100%;
+}
+
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 0 1rem;
+  gap: 1rem;
+}
+
+.task-item label {
+  flex: 2;
+}
+
+.task-item input[type="checkbox"] {
+  width: 1.2rem;
+  height: 1.2rem;
+}
+
+.task-item label::after {
+  display: block;
+  content: "";
+  height: 2px;
+  width: 0px;
+  position: relative;
+  top: -0.5rem;
+  background-color: black;
+  transition: 0.5s ease-in;
+}
+
+.task-item input[type="checkbox"]:checked + label::after {
+  width: 100%;
+}
+
+.task-item select {
+  padding: 0 1rem;
+}
+
+.task-item button {
+  background-color: inherit;
+  border: none;
+}
+
+.task-item button:hover {
+  color: red;
+  cursor: pointer;
+}
+
+.modal-cont {
+  background-color: antiquewhite;
+  /* padding: 1rem; */
+  border-radius: 10px;
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  display: none;
+  /* display: flex;
+  justify-content: center;
+  align-items: center; */
+}
+
+.modal-cont form {
+  width: 50%;
+  height: 50%;
+  margin: 0 auto;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -60%);
+  padding: 0 1.5rem;
+  border-radius: 10px;
+  background-color: aqua;
+  display: flex;flex-direction: column;
+  justify-content: center;
+}
+
+.form-fields {
+  padding: 0.5rem 1rem;
+  display: grid;
+  grid-template-columns: 10rem 1fr;
+  align-items: center;
+}
+
+.modal-cont input[type="submit"] {
+  background-color: skyblue;
+  border: 1px solid skyblue;
+  padding: 0.5rem 1rem;
+  border-radius: 5px;
+  margin: 2rem auto;
+  display: block;
+}
+
+.modal-cont input:not([type="submit"]),select{
+    padding: 0.5rem 0;
 }
