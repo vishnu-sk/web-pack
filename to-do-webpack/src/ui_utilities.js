@@ -1,7 +1,7 @@
 const createElementWithClasses = (
   elementType,
   content = "",
-  classlist = [],
+  classes = [],
   elemId = ""
 ) => {
   const elem = document.createElement(elementType);
@@ -9,12 +9,13 @@ const createElementWithClasses = (
   if (content !== "") {
     elem.appendChild(text);
   }
-  if (classlist.length > 0) {
-    classlist.forEach(className => elem.classList.add(className));
+  if (classes.length > 0) {
+    classes.forEach(className => elem.classList.add(className));
   }
   if (elemId !== "") {
     elem.id = elemId;
   }
+  return elem;
 };
 
 const appendMultipleChildren = (elem, children) => {

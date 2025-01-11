@@ -73,7 +73,7 @@ nav {
 .content-cont {
   box-sizing: border-box;
   width: 100%;
-  padding: 2rem;
+  padding: 2rem 0;
 }
 
 .header-cont {
@@ -82,8 +82,13 @@ nav {
 
 .task-cont {
   background-color: yellowgreen;
-  padding: 2rem 0;
+  padding: 1.2rem 0 0.2rem;
   width: 100%;
+}
+
+.task-item-cont{
+  box-shadow: inset 0 -8px 10px -10px darkgreen;
+  padding-top: 1rem;
 }
 
 .task-item {
@@ -95,6 +100,7 @@ nav {
 
 .task-item label {
   flex: 2;
+  font-size: 0.9rem;
 }
 
 .task-item input[type="checkbox"] {
@@ -129,6 +135,34 @@ nav {
 .task-item button:hover {
   color: red;
   cursor: pointer;
+}
+
+.task-desc{
+  padding: 0 1.2rem;
+}
+
+.task-desc button{
+  display: block;
+  width: 100%;
+  padding: 0.1rem 0 0.4rem;
+  border: none;
+  background-color: inherit;
+}
+.task-desc button:hover{
+  color: white;
+  text-shadow: 2px 2px 5px yellow;
+  cursor: pointer;
+}
+
+.task-desc button:hover + .task-description{
+  display: block;
+  transition: 0.5s ease-in;
+}
+
+.task-description{
+  display: none;
+  padding: 0 0 0.5rem;
+  transition: 0.5s ease-in;
 }
 
 .modal-cont {
