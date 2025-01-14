@@ -1,6 +1,6 @@
 import { compareAsc, formatDistanceToNowStrict } from "date-fns";
 
-export class Todo {
+class Todo {
   constructor(task, description, deadline, priority) {
     this.task = task;
     this.deadline = new Date(deadline + "T00:00:00");
@@ -40,8 +40,10 @@ export class Todo {
 }
 
 class Project{
-    constructor(){
-        this.todoList = [];
+    constructor(name, list = []){
+        this.name = name;
+        this.todoList = list;
+        this.isActive = false;
     }
 
     addTaskToProject(todo){
@@ -52,4 +54,14 @@ class Project{
         const index = this.todoList.indexOf(todo);
         this.todoList.splice(index, 1);
     }
+
+    makeProjectActive(){
+      this.isActive = true;
+    }
+
+    deactivateProject(){
+      this.isActive = false;
+    }
 }
+
+export {Todo, Project};
