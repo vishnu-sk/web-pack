@@ -1,14 +1,10 @@
+import { ProjectCollection } from "./project_collection";
 import "./styles.css";
-import { createNavBar, createModal, createContentCont, createSideBar } from "./ui_view";
+import init from "./uicontroller";
 
 const container = document.querySelector(".container");
-const nav = createNavBar();
-
-container.appendChild(nav);
-const subCont = document.createElement("div");
-subCont.classList.add("sub-cont");
-subCont.appendChild(createSideBar());
-subCont.appendChild(createContentCont());
-subCont.appendChild(createModal());
-container.appendChild(subCont);
-
+const projectCollection = new ProjectCollection();
+console.log(projectCollection.getCollection());
+(function () {
+  init(projectCollection);
+})(projectCollection);
