@@ -59,7 +59,11 @@ function createContentCont() {
   const headerCont = createElementWithClasses("div", "", ["header-cont"]);
   headerCont.appendChild(createElementWithClasses("h1", "INBOX"));
   const taskCont = createElementWithClasses("div", "", ["task-cont"]);
-  const taskItem = taskGenerator("1", "Hello every Nyah","This is task description");
+  const taskItem = taskGenerator(
+    "1",
+    "Hello every Nyah",
+    "This is task description"
+  );
   taskCont.appendChild(taskItem);
   appendMultipleChildren(content, [headerCont, taskCont]);
   return content;
@@ -93,7 +97,6 @@ function dropDownGenerator(name, dropdownId, valueObject) {
   const dropDown = createElementWithClasses("select", "", [], dropdownId);
   dropDown.setAttribute("name", name);
   for (let key in valueObject) {
-    console.log(valueObject[key]);
     const dropDownElems = createElementWithClasses("option", valueObject[key]);
     dropDownElems.value = key;
     dropDown.appendChild(dropDownElems);
@@ -132,16 +135,59 @@ function taskGenerator(elemId, task, taskDescription) {
     ])
   );
 
-  const description = createElementWithClasses("p", taskDescription,['task-description']);
-  appendMultipleChildren(taskDesc,[buttonForDesc,description]);
+  const description = createElementWithClasses("p", taskDescription, [
+    "task-description",
+  ]);
+  appendMultipleChildren(taskDesc, [buttonForDesc, description]);
 
-  appendMultipleChildren(taskItemCont,[taskItem, taskDesc]);
+  appendMultipleChildren(taskItemCont, [taskItem, taskDesc]);
   return taskItemCont;
 }
 
-function createModal() {
+function createModalForProject() {
+  const modalCont = createElementWithClasses("div", "", ["modal-cont"]);
+  const heading = createElementWithClasses("h1","Create Project");
+  heading.style.fontWeight = "900";
+  heading.style.padding = "1rem";
+  const form = createElementWithClasses("form", "", ["add-project-form"]);
+  form.appendChild(heading);
+  const formLabels = [{ for: "project-name", task: "Project name: " }];
+
+  const formInputs = [
+    { type: "text", name: "name", placeholder: "Eg: Enter a project name.." },
+  ];
+  const formFieldLen = formLabels.length;
+  for (let i = 0; i < formFieldLen; i++) {
+    const formField = createElementWithClasses("div", "", ["form-fields"]);
+    const formLabel = createElementWithClasses("label", formLabels[i].task);
+    formLabel.setAttribute("for", formLabels[i].for);
+    const formInput = createElementWithClasses(
+      "input",
+      "",
+      [],
+      formLabels[i].for
+    );
+    formInput.setAttribute("type", formInputs[i].type);
+    formInput.setAttribute("name", formInputs[i].name);
+    formInput.setAttribute("placeholder", formInputs[i].placeholder);
+    appendMultipleChildren(formField, [formLabel, formInput]);
+    form.appendChild(formField);
+  }
+  const submit = document.createElement("input");
+  submit.setAttribute("type", "submit");
+  submit.value = "+ Add Project";
+  form.appendChild(submit);
+  modalCont.appendChild(form);
+  return modalCont;
+}
+
+function createModal(collectionList) {
+  const heading = createElementWithClasses("h1","Create Task");
+  heading.style.fontWeight = "900";
+  heading.style.padding = "1rem";
   const modalCont = createElementWithClasses("div", "", ["modal-cont"]);
   const form = createElementWithClasses("form", "", ["add-task-form"]);
+  form.appendChild(heading);
   const formLabels = [
     { for: "task-name", task: "Enter task" },
     { for: "task-desc", task: "Task Description" },
@@ -171,6 +217,17 @@ function createModal() {
     appendMultipleChildren(formField, [formLabel, formInput]);
     form.appendChild(formField);
   }
+
+  const formField1 = createElementWithClasses("div", "", ["form-fields"]);
+  const dropdownLabel1 = createElementWithClasses("label", "Task Project: ");
+  dropdownLabel1.setAttribute("for", "task-proj");
+  const dropDownVals1 = {};
+  const k = collectionList.forEach(
+    project => (dropDownVals1[project.name] = project.name)
+  );
+  const dropdown1 = dropDownGenerator("proj", "task-proj", dropDownVals1);
+  appendMultipleChildren(formField1, [dropdownLabel1, dropdown1]);
+
   const formField = createElementWithClasses("div", "", ["form-fields"]);
   const dropdownLabel = createElementWithClasses("label", "Task Priority: ");
   dropdownLabel.setAttribute("for", "task-prio");
@@ -180,9 +237,18 @@ function createModal() {
   submit.setAttribute("type", "submit");
   submit.value = "+ Add task";
   appendMultipleChildren(formField, [dropdownLabel, dropdown]);
-  appendMultipleChildren(form, [formField, submit]);
+
+  appendMultipleChildren(form, [formField1, formField, submit]);
+  
   modalCont.appendChild(form);
   return modalCont;
 }
 
-export { createNavBar, createSideBar, createContentCont, createModal };
+export {
+  createNavBar,
+  createSideBar,
+  createContentCont,
+  createModal,
+  taskGenerator,
+  createModalForProject,
+};
