@@ -3,7 +3,8 @@ export { ProjectCollection };
 
 class ProjectCollection {
   constructor(collectionList = []) {
-    this.collection = collectionList.length == 0 ? this.initCollection() : collectionList;
+    this.collection =
+      collectionList.length == 0 ? this.initCollection() : collectionList;
     this.defaultProject = null;
   }
 
@@ -38,8 +39,10 @@ class ProjectCollection {
     return this.collection;
   }
 
-  addTaskToProject(task, projectName) {
-    const index = this.collection.findIndex(projectItem => projectItem.name == projectName);
+  addTaskToProjectCollection(task, projectName) {
+    const index = this.collection.findIndex(
+      projectItem => projectItem.name == projectName
+    );
     if (index == -1) {
       return;
     }
@@ -47,8 +50,25 @@ class ProjectCollection {
     this.store();
   }
 
-  removeTaskFromProject(task, projectName) {
-    const index = this.collection.findIndex(projectItem => projectItem.name == projectName);
+  removeTaskFromProjectCollection(task, projectName) {
+    const index = this.collection.findIndex(
+      projectItem => projectItem.name == projectName
+    );
+    if (index == -1) {
+      return;
+    }
+    this.collection[index].removeTaskFromProject(task);
+    this.store();
+  }
+
+  addProjectToCollection(projectName) {
+    this.collection.push(new Project(projectName));
+  }
+
+  removeProjectFromCollection(projectName) {
+    const index = this.collection.findIndex(
+      projectItem => projectItem.name == projectName
+    );
     if (index == -1) {
       return;
     }
