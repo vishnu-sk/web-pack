@@ -6,6 +6,7 @@ import {
   createContentCont,
   createSideBar,
   taskGenerator,
+  createModalForProject,
 } from "./ui_view";
 import {
   createElementWithClasses,
@@ -30,25 +31,49 @@ function init(collectionList) {
 }
 
 function render() {
+  container.innerText = "";
   const nav = createNavBar();
   container.appendChild(nav);
   const subCont = document.createElement("div");
   subCont.classList.add("sub-cont");
-  subCont.appendChild(createSideBar());
+  subCont.appendChild(createSideBar(projectCollect));
   subCont.appendChild(renderTask(currentProjectNow));
-  subCont.appendChild(createModal(projectCollect.getCollection()));
+  //subCont.appendChild(createModal(projectCollect.getCollection()));
   container.appendChild(subCont);
+  updateEventListeners();
+}
 
-  const homeProject = new Project("inbox");
+function updateEventListeners() {
   sideBarBtns = document.querySelectorAll(".sidebar-buttons");
   collapsingIcon = document.querySelector(".collapsing");
   headerText = document.querySelector(".header-cont h1");
   form = document.querySelector(".modal-cont form");
   modal = document.querySelector(".modal-cont");
+  const taskCont = document.querySelectorAll(".task-item");
+  taskCont.forEach(task => {
+    task.addEventListener("click", e => {
+      //console.log(e.target);
+      if (e.target.type == "checkbox") {
+        const el= projectCollect
+        .findProjectInCollection(currentProjectNow)
+        .todoList[e.target.id - 1];
+
+        if (e.target.checked) {
+          console.log(el);
+          el.trueCheckStatus();
+        } else {
+          console.log(el);
+          el.falseCheckStatus();
+        }
+      }
+    });
+  });
 
   sideBarBtns.forEach(sideBarBtn =>
     sideBarBtn.addEventListener("click", clickSidebarBtn)
   );
+
+  console.log("rendered page");
 }
 
 function renderTask(project) {
@@ -59,7 +84,8 @@ function renderTask(project) {
   const projectItem = projectCollect
     .getCollection()
     .find(p => p.name === project);
-  content.appendChild(taskView(1, projectItem));
+  content.appendChild(taskView(0, projectItem));
+  updateEventListeners();
   console.log("Rendered content container");
   return content;
 }
@@ -67,10 +93,9 @@ function renderTask(project) {
 function taskView(idstart, project) {
   const taskCont = createElementWithClasses("div", "", ["task-cont"]);
   const headerCont = createElementWithClasses("div", "", ["header-cont"]);
-  const projectName =
-    project.todoList.length > 0 ? project.todoList[0].currentProject : "inbox";
+  const projectName = project.todoList.length > 0 ? project.name : "inbox";
   headerCont.appendChild(
-    createElementWithClasses("h1", projectName.toUpperCase())
+    createElementWithClasses("h1", project.name.toUpperCase())
   );
   taskCont.appendChild(headerCont);
   project.todoList.forEach(todo => {
@@ -88,46 +113,78 @@ function clickSidebarBtn(e) {
   console.log(dataAttribute);
   switch (dataAttribute) {
     case "new":
-      newTask(projectCollect);
+      newTaskProject();
       console.log("MM");
       break;
     case "search": //create search
       break;
     case "inbox": //switch to inbox
       renderTask("inbox");
+      currentProjectNow = "inbox";
       break;
     case "today": //switch to today tasks
       break;
     case "upcoming": //switch to upcoming tasks
       break;
+    case "project":
+      newTaskProject(false);
+      break;
     default:
+      renderTask(dataAttribute);
+      currentProjectNow = dataAttribute;
       break;
   }
 }
 
-function newTask(projectCollect) {
+function newTaskProject(isTask = true) {
+  let callback;
+  if (isTask) {
+    container.appendChild(createModal(projectCollect.getCollection()));
+    callback = createTask;
+  } else {
+    container.appendChild(createModalForProject());
+    console.log(container);
+    callback = createProject;
+  }
+  updateEventListeners();
   modal.style.display = "flex";
-  form.addEventListener("submit", e => createTask(e, projectCollect));
+  form.addEventListener("submit", callback);
   document.addEventListener("click", hideModal);
 }
 
 function hideModal(e) {
   if (e.target.className === "modal-cont") {
-    modal.style.display = "none";
-    document.removeEventListener("click", hideModal);
+    removeModal(e.target);
   }
+}
+
+function removeModal(target) {
+  modal.style.display = "none";
+  document.removeEventListener("click", hideModal);
+  target.parentNode.removeChild(target);
+}
+
+function createProject(e) {
+  e.preventDefault();
+  const name = e.target.name.value;
+  const newProject = new Project(name);
+  projectCollect.addProjectToCollection(name);
+  console.log(projectCollect.getCollection());
+  currentProjectNow = name;
+  removeModal(modal);
+  render();
 }
 
 function createTask(e) {
   e.preventDefault();
-  const keys = ["name", "desc", "deadline", "prio"];
+  const keys = ["name", "desc", "deadline", "prio", "proj"];
   const vals = [];
   keys.forEach(key => vals.push(e.target[key].value));
-  modal.style.display = modal.style.display == "flex" ? "none" : "flex";
-  todoTask = new Todo(vals[0], vals[1], vals[2], vals[3]);
-  projectCollect.addTaskToProject(todoTask, todoTask.currentProject);
+  todoTask = new Todo(vals[0], vals[1], vals[2], vals[3], vals[4]);
+  projectCollect.addTaskToProjectCollection(todoTask, todoTask.currentProject);
   console.log(projectCollect);
   const projectCollectList = projectCollect.getCollection();
+  removeModal(modal);
   renderTask(todoTask.currentProject);
 }
 
