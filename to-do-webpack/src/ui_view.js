@@ -13,7 +13,7 @@ function createNavBar() {
   return navElem;
 }
 
-function createSideBar() {
+function createSideBar(projectList) {
   const iconClass = "material-symbols-outlined";
 
   //creating elements for side bar container and direct children
@@ -46,6 +46,14 @@ function createSideBar() {
     sideBarHeader,
     sideBarButtonGenerator(["add_circle"], ["Project"])
   );
+  projectList.getCollection().forEach(project => {
+    if (project.name !== "inbox") {
+      appendMultipleChildren(
+        sideBarHeader,
+        sideBarButtonGenerator(["close"], [project.name])
+      );
+    }
+  });
 
   //Appeneding elements to side bar container element
   //
@@ -104,7 +112,13 @@ function dropDownGenerator(name, dropdownId, valueObject) {
   return dropDown;
 }
 
-function taskGenerator(elemId, task, taskDescription) {
+function taskGenerator(
+  elemId,
+  task,
+  taskDescription,
+  checkedVal = false,
+  dropdownStartVal = ""
+) {
   const taskItemCont = createElementWithClasses("div", "", ["task-item-cont"]);
   const taskItem = createElementWithClasses("div", "", ["task-item"]);
   const checkBox = createElementWithClasses("input", "", [], elemId);
@@ -112,8 +126,15 @@ function taskGenerator(elemId, task, taskDescription) {
   checkBox.setAttribute("name", elemId);
   const labelForDropdown = createElementWithClasses("label", task);
   labelForDropdown.setAttribute("for", elemId);
+  if (checkedVal) {
+    checkBox.checked = true;
+  }
   const dropDownVals = { 1: "1", 2: "2", 3: "3", 4: "4" };
   const dropdown = dropDownGenerator("prio", "task-prio", dropDownVals);
+  if (dropdownStartVal !== "") {
+    dropdown.value = dropdownStartVal;
+    ChangeTaskItemColor(taskItemCont, dropdownStartVal);
+  }
   const deleteButton = createElementWithClasses("button", "", [
     "delete-task-btn",
   ]);
@@ -146,7 +167,7 @@ function taskGenerator(elemId, task, taskDescription) {
 
 function createModalForProject() {
   const modalCont = createElementWithClasses("div", "", ["modal-cont"]);
-  const heading = createElementWithClasses("h1","Create Project");
+  const heading = createElementWithClasses("h1", "Create Project");
   heading.style.fontWeight = "900";
   heading.style.padding = "1rem";
   const form = createElementWithClasses("form", "", ["add-project-form"]);
@@ -182,7 +203,7 @@ function createModalForProject() {
 }
 
 function createModal(collectionList) {
-  const heading = createElementWithClasses("h1","Create Task");
+  const heading = createElementWithClasses("h1", "Create Task");
   heading.style.fontWeight = "900";
   heading.style.padding = "1rem";
   const modalCont = createElementWithClasses("div", "", ["modal-cont"]);
@@ -239,9 +260,14 @@ function createModal(collectionList) {
   appendMultipleChildren(formField, [dropdownLabel, dropdown]);
 
   appendMultipleChildren(form, [formField1, formField, submit]);
-  
+
   modalCont.appendChild(form);
   return modalCont;
+}
+
+function ChangeTaskItemColor(taskItemCont, dropdownStartVal) {
+  const colorPallete = { 1: "red", 2: "orange", 3: "yellow", 4: "lightgreen" };
+  taskItemCont.style.backgroundColor = colorPallete[dropdownStartVal];
 }
 
 export {
@@ -251,4 +277,5 @@ export {
   createModal,
   taskGenerator,
   createModalForProject,
+  ChangeTaskItemColor
 };
