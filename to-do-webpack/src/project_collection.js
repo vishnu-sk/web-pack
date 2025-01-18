@@ -1,4 +1,4 @@
-import { Project } from "./ui_model";
+import { Project, Todo } from "./ui_model";
 export { ProjectCollection };
 
 class ProjectCollection {
@@ -19,7 +19,21 @@ class ProjectCollection {
         localStorage.getItem("project-collections")
       );
       for (let list of projectItems) {
-        const newProject = new Project(list.name, list.todoList);
+        const newProject = new Project(list.name);
+        const todoList = list.todoList;
+        for (let todo of todoList) {
+          const toDo = new Todo(
+            todo.task,
+            todo.description,
+            todo.deadline,
+            todo.priority,
+            list.name
+          );
+          if (todo.checked) {
+            toDo.trueCheckStatus();
+          }
+          newProject.addTaskToProject(toDo);
+        }
         lists.push(newProject);
       }
     }
@@ -33,10 +47,15 @@ class ProjectCollection {
         JSON.stringify(this.collection)
       );
     }
+    console.log("Saved in Local storage!!");
   }
 
   getCollection() {
     return this.collection;
+  }
+
+  findProjectInCollection(projectName) {
+    return this.collection.find(project => project.name === projectName);
   }
 
   addTaskToProjectCollection(task, projectName) {
@@ -63,6 +82,7 @@ class ProjectCollection {
 
   addProjectToCollection(projectName) {
     this.collection.push(new Project(projectName));
+    this.store();
   }
 
   removeProjectFromCollection(projectName) {
