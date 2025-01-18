@@ -7,6 +7,7 @@ import {
   createSideBar,
   taskGenerator,
   createModalForProject,
+  ChangeTaskItemColor,
 } from "./ui_view";
 import {
   createElementWithClasses,
@@ -52,20 +53,24 @@ function updateEventListeners() {
   const taskCont = document.querySelectorAll(".task-item");
   taskCont.forEach(task => {
     task.addEventListener("click", e => {
-      //console.log(e.target);
-      if (e.target.type == "checkbox") {
-        const el= projectCollect
-        .findProjectInCollection(currentProjectNow)
-        .todoList[e.target.id - 1];
+      console.log(e.target);
+      const taskNumberOnUI = e.target.parentNode.firstChild.id;
+      const el =
+        projectCollect.findProjectInCollection(currentProjectNow).todoList[
+          taskNumberOnUI - 1
+        ];
 
-        if (e.target.checked) {
-          console.log(el);
-          el.trueCheckStatus();
-        } else {
-          console.log(el);
-          el.falseCheckStatus();
-        }
+      if (e.target.type == "checkbox") {
+        handleCheckBox(e, el);
+        //here e is the event for click on task cont
+      } else if (e.target.id == "task-prio") {
+        e.target.addEventListener("change", e =>
+          handlePrioDropdown(e, el, task)
+        );
+        //here e is event for change of value of dropdown
       }
+      //console.log(el);
+      projectCollect.store();
     });
   });
 
@@ -83,7 +88,7 @@ function renderTask(project) {
   content.innerText = "";
   const projectItem = projectCollect
     .getCollection()
-    .find(p => p.name === project);
+    .find(p => p.name.toLowerCase() === project);
   content.appendChild(taskView(0, projectItem));
   updateEventListeners();
   console.log("Rendered content container");
@@ -100,7 +105,13 @@ function taskView(idstart, project) {
   taskCont.appendChild(headerCont);
   project.todoList.forEach(todo => {
     idstart += 1;
-    const task = taskGenerator(idstart, todo.task, todo.description);
+    const task = taskGenerator(
+      idstart,
+      todo.task,
+      todo.description,
+      todo.checked,
+      todo.priority
+    );
     taskCont.appendChild(task);
   });
   return taskCont;
@@ -186,6 +197,22 @@ function createTask(e) {
   const projectCollectList = projectCollect.getCollection();
   removeModal(modal);
   renderTask(todoTask.currentProject);
+}
+
+function handleCheckBox(e, el) {
+  if (e.target.checked) {
+    el.trueCheckStatus();
+  } else {
+    el.falseCheckStatus();
+  }
+}
+
+function handlePrioDropdown(e, el, taskCont) {
+  el.changePriority(e.target.value);
+  e.target.removeEventListener("change", e => handlePrioDropdown(e, el));
+  //console.log(taskCont.parentNode);
+  ChangeTaskItemColor(taskCont.parentNode, e.target.value);
+  console.log("---------");
 }
 
 export default init;
